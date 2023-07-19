@@ -1,0 +1,4 @@
+.env:
+    VUE_APP_API_URL="https://preview.keenthemes.com/metronic8/laravel/api"
+    VUE_APP_API_URL="http://43.139.147.42"
+    VUE_APP_API_URL="http://192.168.2.205:8000"
