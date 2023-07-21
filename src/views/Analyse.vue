@@ -10,7 +10,7 @@
     ></KTModalCard>
     <div v-else>
       <analyse-title-card
-        title="Dataset1"
+        title="Eigenvalue"
         :FValues="FlagValues"
         cardClasses="h-50"
         view="YD15"
@@ -53,17 +53,11 @@ export default defineComponent({
     AnalyseTitleCard,
     ELineCard,
   },
-  // async beforeCreate() {
-  //   await useStore().dispatch(Actions.ANALYSE_FILE, "YD15");
-  // },
   setup() {
     const FlagValues = ref<
       Array<{ Fname: string; value: number; units: string }>
     >([]);
     const store = useStore();
-    // let analyseData = reactive(
-    //   useStore().dispatch(Actions.ANALYSE_FILE, "YD15")
-    // );
     let analyseData = reactive({
       value: {
         count: Number,
@@ -108,10 +102,14 @@ export default defineComponent({
       analyseData.dataSet = NewData.dataSet;
     };
     const updataFvalue = (newFvalues) => {
-      FlagValues.value[0].value = newFvalues?.mean;
-      FlagValues.value[1].value = newFvalues?.skew;
-      FlagValues.value[2].value = newFvalues?.kurt;
-      FlagValues.value[3].value = newFvalues?.std;
+      FlagValues.value[0].value = newFvalues?.count;
+      FlagValues.value[1].value = newFvalues?.min;
+      FlagValues.value[2].value = newFvalues?.max;
+      FlagValues.value[3].value = newFvalues?.median;
+      FlagValues.value[4].value = newFvalues?.mean;
+      FlagValues.value[5].value = newFvalues?.skew;
+      FlagValues.value[6].value = newFvalues?.kurt;
+      FlagValues.value[7].value = newFvalues?.std;
       console.log("Analyse.vue中的FlagValue是：", FlagValues.value);
     };
     onBeforeMount(() => {
@@ -163,6 +161,26 @@ export default defineComponent({
     }
 
     FlagValues.value = [
+      {
+        Fname: "COUNT",
+        value: 0,
+        units: "",
+      },
+      {
+        Fname: "MIN",
+        value: 0,
+        units: "",
+      },
+      {
+        Fname: "MAX",
+        value: 0,
+        units: "",
+      },
+      {
+        Fname: "MEDIAN",
+        value: 0,
+        units: "",
+      },
       {
         Fname: "MEAN",
         value: 0,

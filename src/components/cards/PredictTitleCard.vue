@@ -6,18 +6,26 @@
       <div class="container grid-lg my-5">
         <div class="columns mt-1-5 d-flex flex-row">
           <!-- title -->
-          <div class="column col-6 col-md-8">
-            <h1 class="text-left">{{ title }}</h1>
+          <div class="column col-4 col-md-6">
+            <h1 class="text-left">{{ translator(title) }}</h1>
           </div>
-          <div class="column col-6 col-md-4 d-flex flex-row">
-            <h3 class="column col-3 px-3">{{ translator("ChooseParam") }}</h3>
+          <div class="column col-8 col-md-6 d-flex flex-row">
+            <select
+              v-model="choosedModule"
+              class="form-select column mx-2"
+              @input="$emit('changeModule', $event.target.value)"
+            >
+              <option v-for="(a, index) in modules" :key="index" :value="a">
+                {{ a }}
+              </option>
+            </select>
             <select
               v-model="choosedLevel"
-              class="form-select column"
-              @input="$emit('change', $event.target.value)"
+              class="form-select column mx-2"
+              @input="$emit('changeLevel', $event.target.value)"
             >
               <option v-for="(a, index) in Attribute" :key="index" :value="a">
-                {{ a }}
+                预测粒度{{ a }}
               </option>
             </select>
           </div>
@@ -38,11 +46,13 @@ export default defineComponent({
   props: {
     title: { type: String, required: true },
     level: Number,
+    module: String,
   },
   components: {},
   setup(props) {
     const { t, te } = useI18n();
     const choosedLevel = ref(props.level);
+    const choosedModule = ref(props.module);
     const translator = (text) => {
       if (te(text)) {
         return t(text);
@@ -51,10 +61,13 @@ export default defineComponent({
       }
     };
     const Attribute = [1, 2, 3];
+    const modules = ["回归预测模型", "时序预测模型"];
     return {
       translator,
       Attribute,
       choosedLevel,
+      modules,
+      choosedModule,
     };
   },
 });

@@ -164,9 +164,7 @@ export default defineComponent({
       console.log("predicting: ", props.formId);
     };
     const getDescription = computed(() => {
-      return props.description
-        ? props.description
-        : "CRM App application to HR efficiency";
+      return props.description;
     });
 
     const getBeginDate = computed(() => {
@@ -174,8 +172,7 @@ export default defineComponent({
     });
 
     const getIcon = computed(() => {
-      const defaultIcon = "media/icons/number/" + props.formId + ".svg";
-      return props.icon ? props.icon : defaultIcon;
+      return props.icon;
     });
 
     const getEndDate = computed(() => {
@@ -218,7 +215,6 @@ export default defineComponent({
           },
         }).then(function () {
           // Go to page after successfully login
-          router.push({ name: "dashboard" });
         });
       } else {
         Swal.fire({

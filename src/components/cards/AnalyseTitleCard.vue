@@ -7,7 +7,7 @@
         <div class="columns mt-1-5 d-flex flex-row">
           <!-- title -->
           <div class="column col-6 col-md-8">
-            <h1 class="text-left">{{ title }}</h1>
+            <h1 class="text-left">{{ translator(title) }}</h1>
           </div>
           <div class="column col-6 col-md-4 d-flex flex-row">
             <h3 class="column col-3 px-3">{{ translator("ChooseParam") }}</h3>
@@ -22,21 +22,17 @@
             </select>
           </div>
         </div>
-        <div
-          class="columns mt-1 d-flex flex-column flex-md-row"
-          style="display: flex; flex-wrap: wrap"
-        >
+        <div class="row row-cols-4 mt-1">
           <!-- featured figures -->
           <FlagValueCard
             v-for="{ Fname, value, units } in FValues"
             :key="Fname"
-            class="flex-column text-center border border-dark mx-3"
-            style="flex: 1"
-            :title="Fname"
+            class="text-center"
+            :title="translator(Fname)"
             :content="value"
           >
-            <div class="text-gray">{{ translator(Fname) }}</div>
-            <div class="figure">{{ value }}</div>
+            <!--            <div class="text-gray">{{ translator(Fname) }}</div>-->
+            <!--            <div class="figure">{{ value }}</div>-->
             <div class="text-gray">{{ units }}</div>
           </FlagValueCard>
         </div>

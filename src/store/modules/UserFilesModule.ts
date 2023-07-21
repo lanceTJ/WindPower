@@ -75,15 +75,16 @@ export default class UserFilesModule
   @Mutation
   [Mutations.SET_USER_FILES](userfiles) {
     this.userfiles = userfiles;
-    let file;
-    let cnt = 0;
-    for (file in userfiles.info) {
-      if (!file.icon) {
-        this.userfiles.info[cnt].icon =
-          "media/icons/number/" + (cnt + 1) + ".svg";
-      }
-      if (!file.description) {
-        this.userfiles.info[cnt].description = "这是用户自己给出的备注";
+    let cnt;
+    for (cnt in this.userfiles.info) {
+      console.log("正在初始化", this.userfiles.info[cnt].icon);
+      this.userfiles.info[cnt].icon = "media/icons/number/" + cnt + ".svg";
+      console.log("初始化后", this.userfiles.info[cnt].icon);
+      if (
+        userfiles.info[cnt].description === "[object Object]" ||
+        !userfiles.info[cnt].description
+      ) {
+        this.userfiles.info[cnt].description = "该文件无备注";
       }
       cnt += 1;
     }

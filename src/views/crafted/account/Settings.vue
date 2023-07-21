@@ -49,7 +49,13 @@
                 <!--begin::Preview existing avatar-->
                 <div
                   class="image-input-wrapper w-125px h-125px"
+                  v-if="!useUrl"
                   :style="`background-image: url(${userinfoDetails.avatar})`"
+                ></div>
+                <div
+                  class="image-input-wrapper w-125px h-125px"
+                  v-else
+                  :style="`background-image: url(${avatarUrl})`"
                 ></div>
                 <!--end::Preview existing avatar-->
 
@@ -61,7 +67,12 @@
                   title="Change avatar"
                 >
                   <i class="bi bi-pencil-fill fs-7">
-                    <input type="file" id="testFile" @change="updateAvatar" />
+                    <input
+                      type="file"
+                      id="testFile"
+                      accept="image/x-png,image/jpeg,image/jpg"
+                      @change="updateAvatar"
+                    />
                   </i>
 
                   <!--begin::Inputs-->
@@ -512,7 +523,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, reactive, ref } from "vue";
 import { ErrorMessage, Field, Form } from "vee-validate";
 import { setCurrentPageBreadcrumbs } from "@/core/helpers/breadcrumb";
 import Swal from "sweetalert2/dist/sweetalert2.js";
@@ -545,6 +556,8 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const router = useRouter();
+    const useUrl = ref(false);
+    const avatarUrl = ref("");
     const userinfomation = store.getters.Userinfo;
     const submitButton1 = ref<HTMLElement | null>(null);
     const submitButton2 = ref<HTMLElement | null>(null);
@@ -553,7 +566,6 @@ export default defineComponent({
     const submitButton5 = ref<HTMLElement | null>(null);
     const updateEmailButton = ref<HTMLElement | null>(null);
     const updatePasswordButton = ref<HTMLElement | null>(null);
-
     const emailFormDisplay = ref(false);
     const passwordFormDisplay = ref(false);
 
@@ -707,7 +719,11 @@ export default defineComponent({
         return;
       }
       formData.append("file", file);
-      console.log(formData);
+      userinfoDetails.value.avatar = file;
+      useUrl.value = true;
+      avatarUrl.value = window.URL.createObjectURL(file);
+      console.log("在updateAvatar这个函数中，formData现在是：", formData);
+      console.log("在updateAvatar这个函数中，file现在是：", file);
     };
 
     return {
@@ -730,6 +746,8 @@ export default defineComponent({
       userinfoDetails,
       userbirthday,
       updateAvatar,
+      useUrl,
+      avatarUrl,
     };
   },
 });

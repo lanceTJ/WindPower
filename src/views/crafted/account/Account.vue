@@ -68,7 +68,7 @@
                   <span class="svg-icon svg-icon-4 me-1">
                     <inline-svg src="media/icons/duotune/general/gen018.svg" />
                   </span>
-                  四川 成都
+                  {{ translate("ChengduSichuan") }}
                 </a>
                 <a
                   href="#"

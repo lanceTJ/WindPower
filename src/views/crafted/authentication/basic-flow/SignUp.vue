@@ -12,83 +12,26 @@
       <!--begin::Heading-->
       <div class="mb-10 text-center">
         <!--begin::Title-->
-        <h1 class="text-dark mb-3">创建账号</h1>
+        <h1 class="text-dark mb-3">{{ translator("createAccount") }}</h1>
         <!--end::Title-->
 
         <!--begin::Link-->
         <div class="text-gray-400 fw-semobold fs-4">
-          已经有账号了？
+          {{ translator("AlreadyHadAccount") }}?
 
           <router-link to="/sign-in" class="link-primary fw-bold">
-            点击登录
+            {{ translator("signIn") }}
           </router-link>
         </div>
         <!--end::Link-->
       </div>
       <!--end::Heading-->
 
-      <!--begin::Action-->
-      <!--      <button type="button" class="btn btn-light-primary fw-bold w-100 mb-10">-->
-      <!--        <img-->
-      <!--          alt="Logo"-->
-      <!--          src="media/svg/brand-logos/google-icon.svg"-->
-      <!--          class="h-20px me-3"-->
-      <!--        />-->
-      <!--        Sign in with Google-->
-      <!--      </button>-->
-      <!--end::Action-->
-
-      <!--begin::Separator-->
-      <!--      <div class="d-flex align-items-center mb-10">-->
-      <!--        <div class="border-bottom border-gray-300 mw-50 w-100"></div>-->
-      <!--        <span class="fw-semobold text-gray-400 fs-7 mx-2">OR</span>-->
-      <!--        <div class="border-bottom border-gray-300 mw-50 w-100"></div>-->
-      <!--      </div>-->
-      <!--end::Separator-->
-
-      <!--      &lt;!&ndash;begin::Input group&ndash;&gt;-->
-      <!--      <div class="row fv-row mb-7">-->
-      <!--        &lt;!&ndash;begin::Col&ndash;&gt;-->
-      <!--        <div class="col-xl-6">-->
-      <!--          <label class="form-label fw-bold text-dark fs-6">名</label>-->
-      <!--          <Field-->
-      <!--            class="form-control form-control-lg form-control-solid"-->
-      <!--            type="text"-->
-      <!--            placeholder=""-->
-      <!--            name="first_name"-->
-      <!--            autocomplete="off"-->
-      <!--          />-->
-      <!--          <div class="fv-plugins-message-container">-->
-      <!--            <div class="fv-help-block">-->
-      <!--              <ErrorMessage name="first_name" />-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--end::Col-->
-
-      <!--begin::Col-->
-      <!--        <div class="col-xl-6">-->
-      <!--          <label class="form-label fw-bold text-dark fs-6">姓</label>-->
-      <!--          <Field-->
-      <!--            class="form-control form-control-lg form-control-solid"-->
-      <!--            type="text"-->
-      <!--            placeholder=""-->
-      <!--            name="last_name"-->
-      <!--            autocomplete="off"-->
-      <!--          />-->
-      <!--          <div class="fv-plugins-message-container">-->
-      <!--            <div class="fv-help-block">-->
-      <!--              <ErrorMessage name="last_name" />-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--end::Col-->
-      <!--      </div>-->
-      <!--end::Input group-->
-
       <!--begin::Input group-->
       <div class="fv-row mb-7">
-        <label class="form-label fw-bold text-dark fs-6">用户名</label>
+        <label class="form-label fw-bold text-dark fs-6">{{
+          translator("Username")
+        }}</label>
         <Field
           class="form-control form-control-lg form-control-solid"
           type="username"
@@ -109,7 +52,9 @@
         <!--begin::Wrapper-->
         <div class="mb-1">
           <!--begin::Label-->
-          <label class="form-label fw-bold text-dark fs-6"> 密码 </label>
+          <label class="form-label fw-bold text-dark fs-6">
+            {{ translator("Password") }}
+          </label>
           <!--end::Label-->
 
           <!--begin::Input wrapper-->
@@ -151,7 +96,7 @@
         <!--end::Wrapper-->
         <!--begin::Hint-->
         <div class="text-muted">
-          请至少使用6位字符，包括数字，字母，特殊字符等
+          {{ translator("passwdAlert") }}
         </div>
         <!--end::Hint-->
       </div>
@@ -159,7 +104,9 @@
 
       <!--begin::Input group-->
       <div class="fv-row mb-5">
-        <label class="form-label fw-bold text-dark fs-6">确认密码</label>
+        <label class="form-label fw-bold text-dark fs-6">{{
+          translator("ConfirmPassword")
+        }}</label>
         <Field
           class="form-control form-control-lg form-control-solid"
           type="password"
@@ -175,23 +122,6 @@
       </div>
       <!--end::Input group-->
 
-      <!--begin::Input group-->
-      <!--      <div class="fv-row mb-10">-->
-      <!--        <label class="form-check form-check-custom form-check-solid">-->
-      <!--          <Field-->
-      <!--            class="form-check-input"-->
-      <!--            type="checkbox"-->
-      <!--            name="toc"-->
-      <!--            value="1"-->
-      <!--          />-->
-      <!--          <span class="form-check-label fw-semobold text-gray-700 fs-6">-->
-      <!--            I Agree &-->
-      <!--            <a href="#" class="ms-1 link-primary">Terms and conditions</a>.-->
-      <!--          </span>-->
-      <!--        </label>-->
-      <!--      </div>-->
-      <!--end::Input group-->
-
       <!--begin::Actions-->
       <div class="text-center">
         <button
@@ -200,9 +130,9 @@
           type="submit"
           class="btn btn-lg btn-primary"
         >
-          <span class="indicator-label"> 提交 </span>
+          <span class="indicator-label"> {{ translator("Submit") }} </span>
           <span class="indicator-progress">
-            请稍候...
+            {{ translator("pleaseWait") }}...
             <span
               class="spinner-border spinner-border-sm align-middle ms-2"
             ></span>
@@ -225,6 +155,7 @@ import { useRouter } from "vue-router";
 import { Actions } from "@/store/enums/StoreEnums";
 import { PasswordMeterComponent } from "@/assets/ts/components";
 import Swal from "sweetalert2/dist/sweetalert2.min.js";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "sign-up",
@@ -237,21 +168,29 @@ export default defineComponent({
     const store = useStore();
     const router = useRouter();
 
+    const { t, te } = useI18n();
+    const translator = (text) => {
+      if (te(text)) {
+        return t(text);
+      } else {
+        return text;
+      }
+    };
     const submitButton = ref<HTMLButtonElement | null>(null);
 
     const registration = Yup.object().shape({
       username: Yup.string()
-        .min(4, "用户名至少需要4个字符")
-        .required("必须输入用户名")
+        .min(4, translator("UsernameNeed4Symbols"))
+        .required(translator("PleaseInputUsername"))
         .label("Password Confirmation"),
       password: Yup.string()
-        .min(6, "密码至少需要6个字符")
-        .required("必须输入密码")
+        .min(6, translator("PasswordMustBeAtLeast6CharacterAndContainSymbols"))
+        .required(translator("PleaseInputPasswd"))
         .label("password"),
       confirmedPassword: Yup.string()
         .required()
-        .oneOf([Yup.ref("password"), null], "两次密码必须相同")
-        .required("请再次确认密码")
+        .oneOf([Yup.ref("password"), null], translator("PasswordsMustMatch"))
+        .required(translator("ConfirmPassword"))
         .label("Password Confirmation"),
     });
 
@@ -279,17 +218,17 @@ export default defineComponent({
       const error = store.getters.getErrors;
       const error_alert =
         error === "User already exists"
-          ? "用户名已存在！"
+          ? translator("UserExist")
           : error === "password can not be empty"
-          ? "密码不能为空！"
-          : "注册失败！";
+          ? translator("PleaseInputPasswd")
+          : translator("failToRegister");
 
       if (!error || error == "success") {
         Swal.fire({
-          text: "注册成功！",
+          text: translator("signUpSuccess") + "!",
           icon: "success",
           buttonsStyling: false,
-          confirmButtonText: "去登录",
+          confirmButtonText: translator("signIn"),
           customClass: {
             confirmButton: "btn fw-semobold btn-light-primary",
           },
@@ -302,7 +241,7 @@ export default defineComponent({
           text: error_alert,
           icon: "error",
           buttonsStyling: false,
-          confirmButtonText: "重试",
+          confirmButtonText: translator("Retry"),
           customClass: {
             confirmButton: "btn fw-semobold btn-light-danger",
           },
@@ -318,6 +257,7 @@ export default defineComponent({
       registration,
       onSubmitRegister,
       submitButton,
+      translator,
     };
   },
 });

@@ -53,6 +53,9 @@ export default class UserinfoModule extends VuexModule implements UserAuthInfo {
   @Mutation
   [Mutations.SET_USERINFO](user) {
     this.userinfo = user;
+    if (this.userinfo.avatar.slice(0, 7) === "/images") {
+      this.userinfo.avatar = "http://43.139.147.42:8000" + this.userinfo.avatar;
+    }
   }
 
   // @Mutation

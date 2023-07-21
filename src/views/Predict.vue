@@ -5,14 +5,16 @@
     image="media/illustrations/TFUsed/predictive_analytics.svg"
     button-text="StartPredict"
     @startAnalyse="startAnalyse"
-    v-if="!predictData.base_aPower"
+    v-if="!predictData.base_yd15"
   ></KTModalCard>
   <div v-else>
     <analyse-title-card
-      title="Dataset1"
+      title="ChoosePredictParam"
       cardClasses="h-50"
       :level="1"
-      @change="changeLevel"
+      :module="Module[1]"
+      @changeLevel="changeLevel"
+      @changeModule="changeModule"
     />
     <ELineCard
       ref="elineCard"
@@ -30,6 +32,7 @@ import {
   reactive,
   onBeforeMount,
   watch,
+  ref,
 } from "vue";
 import KTModalCard from "@/components/cards/AnalyseCard.vue";
 import { setCurrentPageBreadcrumbs } from "@/core/helpers/breadcrumb";
@@ -65,6 +68,9 @@ export default defineComponent({
       pre_yd15: [],
       pre_time: [],
     });
+    const Module = ["模型0", "时序预测模型", "回归预测模型"];
+    const choosedLevel = ref<number>(1);
+    const choosedModule = ref<number>(1);
 
     const { t, te } = useI18n();
     const translator = (text) => {
@@ -79,10 +85,11 @@ export default defineComponent({
     });
 
     const startAnalyse = async () => {
-      changeLevel(1);
+      updatePredictData(store.getters.AnalyseData);
       console.log("Predict started!");
     };
     const updatePredictData = (NewData) => {
+      console.log("正在更新预测数据");
       predictData.base_aPower = NewData.base_aPower;
       predictData.base_time = NewData.base_time;
       predictData.base_yd15 = NewData.base_yd15;
@@ -92,30 +99,50 @@ export default defineComponent({
     };
 
     onBeforeMount(() => {
-      store.dispatch(Actions.PREDICT_FILE, 1);
-      updatePredictData(store.getters.AnalyseData);
-      console.log("IN BeforeMount ANALYSE VIEW, analysedata: ", predictData);
+      startPredict();
+      console.log("IN BeforeMount predict VIEW, predictdata: ", predictData);
     });
     onMounted(() => {
-      updatePredictData(store.getters.AnalyseData);
-      console.log("IN Mounted ANALYSE VIEW, analysedata: ", predictData);
-      changeLevel("1");
+      console.log("IN Mounted predict VIEW, predictdata: ", predictData);
     });
 
-    const changeLevel = async (level) => {
-      await store.dispatch(Actions.PREDICT_FILE, level);
-      updateAll(level);
+    const changeLevel = (level) => {
+      console.log("Level Changed to: ", level);
+      choosedLevel.value = level;
+      startPredict();
     };
 
-    function updateAll(level) {
+    const changeModule = (module) => {
+      console.log("Module Changed to: ", module);
+      choosedModule.value = module === Module[1] ? 1 : 2;
+      startPredict();
+    };
+    const startPredict = async () => {
+      console.log("正在发送预测请求", choosedLevel.value, choosedModule.value);
+      await store.dispatch(Actions.PREDICT_FILE, {
+        level: choosedLevel.value,
+        category: choosedModule.value,
+      });
+      updateAll();
+    };
+
+    function updateAll() {
       updatePredictData(store.getters.PredictData);
-      console.log("更新到粒度：", level);
+      console.log(
+        "更新到模型：",
+        choosedModule.value,
+        "更新到粒度：",
+        choosedLevel.value
+      );
+      console.log("choosedModule：", choosedModule);
     }
     return {
       getIllustrationsPath,
       predictData,
       translator,
       startAnalyse,
+      changeModule,
+      Module,
       changeLevel,
     };
   },

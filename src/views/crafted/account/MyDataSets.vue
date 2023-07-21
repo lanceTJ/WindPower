@@ -4,7 +4,9 @@
     <!--begin::Heading-->
     <h2 class="fs-2 fw-semobold my-2">
       {{ translator("myDataSets") }}
-      <span class="fs-6 text-gray-400 ms-1">以下这些是您的数据集！</span>
+      <span class="fs-6 text-gray-400 ms-1"
+        >{{ translator("TheseAreYourDatasets") }}！</span
+      >
     </h2>
     <!--end::Heading-->
 
@@ -42,9 +44,6 @@
         :description="file.description"
       ></KTCard>
     </div>
-    <!--end::Col-->
-    <!--begin::Pagination-->
-    <!--end::Pagination-->
   </div>
 </template>
 

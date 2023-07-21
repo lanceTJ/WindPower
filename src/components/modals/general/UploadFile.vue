@@ -162,7 +162,7 @@ export default defineComponent({
       store.dispatch(Mutations.SET_FILE_ERROR, "");
       await store.dispatch(Actions.UPLOAD_FILE, {
         file: file,
-        description: FileDescription,
+        description: FileDescription.value ? FileDescription.value : "",
       });
       const error = store.getters.getFileError;
       console.log("File upload error message: ", error);

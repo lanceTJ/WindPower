@@ -30,15 +30,15 @@
       <!--begin::Heading-->
       <div class="text-center mb-10">
         <!--begin::Title-->
-        <h1 class="text-dark mb-3">登 录</h1>
+        <h1 class="text-dark mb-3">{{ translator("signIn") }}</h1>
         <!--end::Title-->
 
         <!--begin::Link-->
         <div class="text-gray-400 fw-semobold fs-4">
-          没有账号？
+          {{ translator("noAccount") }}？
 
           <router-link to="/sign-up" class="link-primary fw-bold">
-            创建账号
+            {{ translator("createAccount") }}
           </router-link>
         </div>
         <!--end::Link-->
@@ -55,7 +55,9 @@
       <!--begin::Input group-->
       <div class="fv-row mb-10">
         <!--begin::Label-->
-        <label class="form-label fs-6 fw-bold text-dark">用户名</label>
+        <label class="form-label fs-6 fw-bold text-dark">{{
+          translator("Username")
+        }}</label>
         <!--end::Label-->
 
         <!--begin::Input-->
@@ -80,7 +82,9 @@
         <!--begin::Wrapper-->
         <div class="d-flex flex-stack mb-2">
           <!--begin::Label-->
-          <label class="form-label fw-bold text-dark fs-6 mb-0">密码</label>
+          <label class="form-label fw-bold text-dark fs-6 mb-0">{{
+            translator("Password")
+          }}</label>
           <!--end::Label-->
 
           <!--begin::Link-->
@@ -118,10 +122,10 @@
           id="kt_sign_in_submit"
           class="btn btn-lg btn-primary w-100 mb-5"
         >
-          <span class="indicator-label"> 登 录 </span>
+          <span class="indicator-label"> {{ translator("signIn") }} </span>
 
           <span class="indicator-progress">
-            请 稍 候 ……
+            {{ translator("pleaseWait") }}...
             <span
               class="spinner-border spinner-border-sm align-middle ms-2"
             ></span>
@@ -143,6 +147,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2/dist/sweetalert2.min.js";
 import * as Yup from "yup";
+import { useI18n } from "vue-i18n";
 // import {setCurrentPageTitle} from "@/core/helpers/breadcrumb";
 
 export default defineComponent({
@@ -155,6 +160,14 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const router = useRouter();
+    const { t, te } = useI18n();
+    const translator = (text) => {
+      if (te(text)) {
+        return t(text);
+      } else {
+        return text;
+      }
+    };
 
     const submitButton = ref<HTMLButtonElement | null>(null);
     // onMounted(async () => {
@@ -164,10 +177,12 @@ export default defineComponent({
 
     //Create form validation object
     const login = Yup.object().shape({
-      username: Yup.string().required("请输入用户名").label("Username"),
+      username: Yup.string()
+        .required(translator("PleaseInputUsername"))
+        .label("Username"),
       password: Yup.string()
-        .min(6, "密码至少为6位")
-        .required("请输入密码")
+        .min(6, translator("PasswordMustBeAtLeast6CharacterAndContainSymbols"))
+        .required(translator("PleaseInputPasswd"))
         .label("Password"),
     });
 
@@ -191,16 +206,16 @@ export default defineComponent({
       console.log("error message: ", error);
       const error_alert =
         error === "username or password error"
-          ? "用户名或密码错误"
-          : "网络异常";
+          ? translator("UserOrPasswdWrong")
+          : translator("NetworkError");
       // const error_alert: string;
 
       if (error == "success") {
         Swal.fire({
-          text: "登录成功!",
+          text: translator("LoginSuccess") + "!",
           icon: "success",
           buttonsStyling: false,
-          confirmButtonText: "继续",
+          confirmButtonText: translator("Continue"),
           customClass: {
             confirmButton: "btn fw-semobold btn-light-primary",
           },
@@ -213,7 +228,7 @@ export default defineComponent({
           text: error_alert,
           icon: "error",
           buttonsStyling: false,
-          confirmButtonText: "重试",
+          confirmButtonText: translator("Retry"),
           customClass: {
             confirmButton: "btn fw-semobold btn-light-danger",
           },
@@ -233,6 +248,7 @@ export default defineComponent({
       login,
       submitButton,
       themeMode,
+      translator,
     };
   },
 });

@@ -32,6 +32,29 @@ export default {
         return text;
       }
     };
+
+    const getTime = (newProps) => {
+      console.log("newProps: ", newProps);
+      if (!newProps) {
+        console.log("初始化时间轴失败");
+        return 0;
+      }
+      let cnt;
+      for (cnt in newProps.base_time) {
+        if (newProps.base_time[cnt] === newProps.pre_time[0]) {
+          break;
+        }
+      }
+      console.log("time 点改变了，现在是：", newProps.base_time[cnt], cnt);
+      return cnt;
+    };
+    const getP = (prop) => {
+      console.log("prop.base_apower-------------", prop.base_aPower);
+      return prop.base_aPower.length === 0
+        ? prop.base_time
+        : prop.base_time.concat(prop.pre_time);
+    };
+
     const renderChart = (newProps) => {
       mychart.setOption({
         tooltip: {
@@ -56,7 +79,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: newProps.base_time.concat(newProps.pre_time),
+          data: getP(newProps),
         },
         yAxis: {
           type: "value",
@@ -82,18 +105,6 @@ export default {
             itemStyle: {
               color: "rgba(40,83,227,0.58)",
             },
-            // areaStyle: {
-            //   color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            //     {
-            //       offset: 0,
-            //       color: "rgb(20,224,187)",
-            //     },
-            //     {
-            //       offset: 1,
-            //       color: "rgba(43,208,253,0.58)",
-            //     },
-            //   ]),
-            // },
             data: newProps.base_aPower,
           },
           {
@@ -115,12 +126,13 @@ export default {
               normal: {
                 lineStyle: {
                   width: 2,
-                  color: "rgba(124,153,232,0.58)",
+                  color: "rgba(222,171,122,0.94)",
                   type: "dotted", //'dotted'点型虚线 'solid'实线 'dashed'线性虚线
                 },
               },
             },
             data: newProps.base_aPower
+              .slice(0, Number(getTime(newProps)) + 1)
               .map(() => null)
               .concat(newProps.pre_aPower),
           },
@@ -132,13 +144,16 @@ export default {
             itemStyle: {
               normal: {
                 lineStyle: {
-                  color: "rgba(112,222,113,0.58)",
+                  color: "rgba(245,39,39,0.58)",
                   width: 2,
                   type: "dashed",
                 },
               },
             },
-            data: newProps.base_yd15.map(() => null).concat(newProps.pre_yd15),
+            data: newProps.base_yd15
+              .slice(0, Number(getTime(newProps)) + 1)
+              .map(() => null)
+              .concat(newProps.pre_yd15),
           },
         ],
       });

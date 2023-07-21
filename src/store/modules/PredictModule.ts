@@ -80,26 +80,22 @@ export default class PredictingModule
 
   @Action
   [Actions.PREDICT_FILE](credentials) {
-    if (credentials == 3 || credentials == 2 || credentials == 1) {
-      console.log("PREDICT FILE: ", credentials);
-      return ApiService.post("/predict/", { level: credentials })
-        .then(({ data }) => {
-          if (data.error_message != "success") {
-            console.log("Predict error: ", data.error_message);
-            this.context.commit(Mutations.SET_FILE_ERROR, data.error_message);
-          } else {
-            console.log("Predict SUCCESS!", data);
-            this.context.commit(Mutations.SET_FILE_ERROR, data.error_message);
-            this.context.commit(Mutations.SET_PREDICT_DATA, data);
-            this.context.commit(Actions.GET_USER_FILES);
-          }
-          return data;
-        })
-        .catch((error) => {
-          console.log("UPLOAD_FILE error: " + error);
-        });
-    } else {
-      console.log("Predict credentials invalid： ", credentials);
-    }
+    console.log("PREDICT FILE: ", credentials);
+    return ApiService.post("/predict/", credentials)
+      .then(({ data }) => {
+        if (data.error_message != "success") {
+          console.log("Predict error: ", data.error_message);
+          this.context.commit(Mutations.SET_FILE_ERROR, data.error_message);
+        } else {
+          console.log("Predict SUCCESS!", data);
+          this.context.commit(Mutations.SET_FILE_ERROR, data.error_message);
+          this.context.commit(Mutations.SET_PREDICT_DATA, data);
+          this.context.commit(Actions.GET_USER_FILES);
+        }
+        return data;
+      })
+      .catch((error) => {
+        console.log("UPLOAD_FILE error: " + error);
+      });
   }
 }

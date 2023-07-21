@@ -2,7 +2,7 @@
   <!--begin::Card-->
   <div class="card h-100" :class="cardClasses">
     <!--begin::Card header-->
-    <div class="card-header flex-nowrap border-0 pt-0 mt-0">
+    <div class="card-header flex-nowrap border-0 pt-0 m-0">
       <!--begin::Card title-->
       <div class="card-title m-0">
         <!--begin::Title-->
