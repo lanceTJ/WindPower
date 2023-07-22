@@ -34,7 +34,7 @@ import {
   watch,
   ref,
 } from "vue";
-import KTModalCard from "@/components/cards/AnalyseCard.vue";
+import KTModalCard from "@/components/cards/PredictCard.vue";
 import { setCurrentPageBreadcrumbs } from "@/core/helpers/breadcrumb";
 import { getIllustrationsPath } from "@/core/helpers/assets";
 import AnalyseTitleCard from "@/components/cards/PredictTitleCard.vue";

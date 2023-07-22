@@ -80,17 +80,24 @@
       <!--begin::Progress-->
       <!--end::Progress-->
       <div class="d-flex">
-        <a
+        <button
           id="kt_download"
+          type="button"
           @click="download"
           ref="downloadButton"
           class="btn btn-light-primary btn-hover-scale me-2"
         >
-          <span class="svg-icon svg-icon-1">
+          <span class="indicator-label svg-icon svg-icon-1">
             <inline-svg src="media/icons/duotune/arrows/arr004.svg" />
+            {{ translator("Download") }}
           </span>
-          {{ translator("Download") }}
-        </a>
+          <span class="indicator-progress">
+            {{ translator("pleaseWait") }}
+            <span
+              class="spinner-border spinner-border-sm align-middle ms-2"
+            ></span>
+          </span>
+        </button>
         <a
           id="delete"
           @click="Delete"
@@ -110,7 +117,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Dropdown2 from "@/components/dropdown/Dropdown2.vue";
 import { Actions } from "@/store/enums/StoreEnums";
@@ -143,6 +150,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const { t, te } = useI18n();
+    const downloadButton = ref<HTMLButtonElement | null>(null);
     const translator = (text) => {
       if (te(text)) {
         return t(text);
@@ -151,6 +159,14 @@ export default defineComponent({
       }
     };
     const download = async () => {
+      console.log("正在下载");
+      if (downloadButton.value) {
+        console.log("downloadButton: ", downloadButton);
+        // eslint-disable-next-line
+        downloadButton.value!.disabled = true;
+        // Activate indicator
+        downloadButton.value.setAttribute("data-kt-indicator", "on");
+      }
       await store.dispatch(Actions.DOWNLOAD_FILE, props);
       console.log("downloading: ", props.formId);
     };
@@ -242,6 +258,7 @@ export default defineComponent({
       translator,
       analyse,
       predict,
+      downloadButton,
       download,
       getDescription,
       getBeginDate,

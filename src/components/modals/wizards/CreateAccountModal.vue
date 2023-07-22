@@ -308,15 +308,22 @@
                 <div class="me-2">
                   <button
                     type="button"
+                    ref="downloadButton"
                     class="btn btn-lg btn-light-primary me-3 btn-hover-scale"
                     data-kt-stepper-action="previous"
                     v-if="currentStepIndex === totalSteps - 1"
                     @click="download()"
                   >
-                    <span class="svg-icon svg-icon-3 me-1">
+                    <span class="indicator-label svg-icon svg-icon-3 me-1">
                       <inline-svg src="media/icons/duotune/arrows/arr091.svg" />
+                      {{ translator("DownloadProcessedFile") }}
                     </span>
-                    {{ translator("DownloadProcessedFile") }}
+                    <span class="indicator-progress">
+                      {{ translator("pleaseWait") }}
+                      <span
+                        class="spinner-border spinner-border-sm align-middle ms-2"
+                      ></span>
+                    </span>
                   </button>
                 </div>
                 <div class="me-2">
@@ -449,6 +456,7 @@ export default defineComponent({
     const store = useStore();
     const userfiles = store.getters.UserFiles.info;
     const router = useRouter();
+    const downloadButton = ref<HTMLButtonElement | null>(null);
     console.log("CURRENTSTEP:", currentStepIndex.value);
     const { t, te } = useI18n();
     const translator = (text) => {
@@ -1020,11 +1028,24 @@ export default defineComponent({
       store.dispatch(Mutations.SET_ANALYSE_FILE, userfiles[item]);
     };
     const download = async () => {
-      console.log("DOWNLOADING");
+      console.log("正在下载");
+      if (downloadButton.value) {
+        console.log("downloadButton: ", downloadButton);
+        // eslint-disable-next-line
+        downloadButton.value!.disabled = true;
+        // Activate indicator
+        downloadButton.value.setAttribute("data-kt-indicator", "on");
+      }
       await store.dispatch(
         Actions.DOWNLOAD_PROCESSED_FILE,
         formData.value.formId
       );
+      if (downloadButton.value) {
+        // eslint-disable-next-line
+        downloadButton.value!.disabled = false;
+        // Activate indicator
+        downloadButton.value.removeAttribute("data-kt-indicator");
+      }
     };
 
     const analyse = () => {
@@ -1062,6 +1083,7 @@ export default defineComponent({
       formData,
       createAccountModalRef,
       processLogs,
+      downloadButton,
     };
   },
 });

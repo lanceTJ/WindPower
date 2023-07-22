@@ -74,7 +74,7 @@
 
             <!--begin::Table body-->
             <tbody>
-              <template v-for="item in list" :key="item">
+              <template v-for="(item, index) in list" :key="index">
                 <tr>
                   <td>
                     <div
@@ -132,13 +132,20 @@
 
                   <td class="text-end">
                     <button
-                      @click="download(item)"
+                      @click="download(item, index)"
+                      type="button"
+                      ref="downloadButton"
                       class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
                     >
-                      <span class="svg-icon svg-icon-3">
+                      <span class="indicator-label svg-icon svg-icon-3">
                         <inline-svg
                           src="media/icons/duotune/arrows/arr004.svg"
                         />
+                      </span>
+                      <span class="indicator-progress">
+                        <span
+                          class="spinner-border spinner-border-sm align-middle ms-2"
+                        ></span>
                       </span>
                     </button>
                     <a
@@ -198,6 +205,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const checkedRows = ref([]);
+    const downloadButton = ref<HTMLButtonElement | null>(null);
     const { t, te } = useI18n();
     const translator = (text) => {
       if (te(text)) {
@@ -240,9 +248,23 @@ export default defineComponent({
     const getTitle = computed(() => {
       return list.value.title ? list.value.title : "Demo2";
     });
-    const download = (item) => {
+    const download = async (item, index) => {
+      console.log("正在下载");
+      if (downloadButton.value) {
+        console.log("downloadButton: ", downloadButton);
+        // eslint-disable-next-line
+        downloadButton.value[index]!.disabled = true;
+        // Activate indicator
+        downloadButton.value[index].setAttribute("data-kt-indicator", "on");
+      }
       console.log("downloading: ", item);
-      store.dispatch(Actions.DOWNLOAD_FILE, item);
+      await store.dispatch(Actions.DOWNLOAD_FILE, item);
+      if (downloadButton.value) {
+        // eslint-disable-next-line
+        downloadButton.value[index]!.disabled = false;
+        // Activate indicator
+        downloadButton.value[index].removeAttribute("data-kt-indicator");
+      }
     };
     const deleteFile = async (item) => {
       console.log("deleteFile: ", item);
@@ -294,6 +316,7 @@ export default defineComponent({
       download,
       getBeginDate,
       getEndDate,
+      downloadButton,
       getStatus,
       list,
       checkedRows,
